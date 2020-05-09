@@ -5,34 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>react hook todo</title>
   <style type="text/css">
+		:root {
+			--yellow: #ffe58f;
+			--red: #ff7875;
+			--blue: #40a9ff;
+			--gray: #cccccc;
+			--black: #595959;
+		}
+		html {
+			-webkit-text-size-adjust: 100%;
+			-ms-text-size-adjust: 100%;
+			-moz-box-sizing: border-box; 
+			-webkit-box-sizing: border-box; 
+			-o-box-sizing: border-box; 
+			-ms-box-sizing: border-box;
+			box-sizing: border-box;
+			text-decoration: none;
+			text-shadow: none;
+		}
+		
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+			height:100%;
+			width: 100%;
+			font-size: 16px;
+			overflow: hidden;
+		}
+		
     .container {
-      width: 60%;
+      width: 61.8%;
       margin: 20px auto;
       text-align: center;
-      font-size: 16px;
+			color: var(--black);
     }
 
-    .header span {
+    .motto span {
       line-height: 48px;
-      border-bottom: 2px solid #eee;
-      text-decoration: none;
-      font-size: 1.2rem;
-    }
-
-    .header span:hover {
-      outline-width: 0;
-      -webkit-transition: box-shadow 0.2s cubic-bezier(0, 0.8, 0.16, 1);
-      -moz-transition: box-shadow 0.2s cubic-bezier(0, 0.8, 0.16, 1);
-      -ms-transition: box-shadow 0.2s cubic-bezier(0, 0.8, 0.16, 1);
-      transition: box-shadow 0.2s cubic-bezier(0, 0.8, 0.16, 1);
-      -webkit-box-shadow: inset 0 -10px #eee;
-      box-shadow: inset 0 -10px #eee;
+      font-size: 1.3rem;
+			-webkit-box-shadow: inset 0 -10px var(--yellow);
+			box-shadow: inset 0 -10px var(--yellow);
+			outline-width: 0;
     }
 
     .todos {
-      border: 1px dashed #ccc;
+      border: 1px dashed var(--gray);
       text-align: left;
-      max-height: 72vh;
+      max-height: 65vh;
       overflow: auto;
     }
 
@@ -41,32 +59,32 @@
       padding: 18px 0;
     }
 
-    .empty {
+    .tip {
       line-height: 90px;
       padding-left: 20px;
-      color: #bbb;
+      color: var(--gray);
     }
 
     .done {
-      text-decoration: line-through #222;
-      color: #ccc;
+      text-decoration: line-through var(--black);
+      color: var(--gray);
     }
 
-    .hero {
-      border: 1px dashed #ccc;
+    .wish {
+      border: 1px dashed var(--gray);
       margin: 20px 0;
       padding: 20px 0 20px 20px;
     }
 
-    .want {
+    .hero {
       display: flex;
       justify-content: space-between;
       line-height: 42px;
       text-align: left;
     }
 
-    .want input {
-      border: 1px solid #ccc;
+    .hero input {
+      border: 1px solid var(--gray);
       line-height: 32px;
       width: 90%;
       padding: 4px;
@@ -79,23 +97,22 @@
     }
 
     .action.del {
-      color: #ff7875;
+      color: var(--red);
       font-size: 18px;
     }
 
     .action.yes {
-      color: #52c41a;
+      color: var(--blue);
     }
 
     .action.add {
       font-size: 20px;
-      color: #40a9ff;
     }
 
     .footer {
       font-size: 13px;
       line-height: 24px;
-      color: #ccc;
+      color: var(--gray);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -109,16 +126,19 @@
 <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/immer@5.2.1/dist/immer.umd.min.js"></script>
 <script type="text/babel">
 
-  const _config = {
-    header: 'Forever youthful. Forever weeping.',
+  const $ = {
+    motto: 'Forever youthful. Forever weeping.',
     todos: [
       {
+				uid: '377368e9f4384',
         text: '读完《百年孤独》',
         status: true
       },
       {
+				uid: 'b7a8656148c44',
         text: '学会周杰伦的《蒲公英的约定》',
         status: false
       }
@@ -126,59 +146,55 @@
     yesIcon: ' √ ',
     delIcon: ' × ',
     addIcon: ' + ',
-    tip: 'You did nothing. (＠_＠;) ',
+    tip: 'You did nothing...(＠_＠;) ',
     copyRight: `Copyright © ${new Date().getFullYear()} Lelie Chiang. All rights reserved `
   }
-
-  const WantTodo = ({ addTodo }) => {
+	
+	const genUid = () => Math.random().toString(16).substring(2)
+	
+  const WishTodo = ({ addTodo }) => {
     const [input, setInput] = React.useState('')
     const handleInput = () => !!input && addTodo(input) && setInput('')
     const handleEnter = (e) => e.keyCode === 13 && handleInput()
     return (
-      <div className='want'>
+      <div className='hero'>
         <input
           type='text'
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleEnter}
         />
-        <span className='action add' onClick={handleInput}>{_config.addIcon}</span>
+        <span className='action add' onClick={handleInput}>{$.addIcon}</span>
       </div>
     )
   }
 
   const App = () => {
-    const [todos, setTodos] = React.useState(_config.todos)
+    const [todos, setTodos] = React.useState($.todos)
 
     const TodoItem = ({ todo, index }) => {
       return (
         <li>
           <span className={todo.status ? 'done' : ''}>{todo.text}</span>
-          <span className='action del' onClick={() => delTodo(index)}>{_config.delIcon}</span>
-          <span className='action yes' onClick={() => yesTodo(index)}>{_config.yesIcon}</span>
+          <span className='action del' onClick={() => delTodo(index)}>{$.delIcon}</span>
+          <span className='action yes' onClick={() => yesTodo(index)}>{$.yesIcon}</span>
         </li>
       )
     }
 
     const yesTodo = (index) => {
-      const newTodos = [...todos]
-      const { status } = newTodos[index]
-      if (status) return
-      newTodos[index].status = !status
-      setTodos(newTodos)
+			const { status } = todos[index]
+			!status ? setTodos(immer.produce(todos => { todos[index].status = !status })) : null
     }
 
     const delTodo = (index) => {
-      const newTodos = [...todos]
-      newTodos.splice(index, 1)
-      setTodos(newTodos)
+			setTodos(immer.produce(todos => { todos.splice(index, 1) }))
     }
 
     const addTodo = (input) => {
       const exist = todos.some(it => it.text.trim() === input.trim())
       if (!exist) {
-        const newTodos = [...todos, { text: input, status: false }]
-        setTodos(newTodos)
+        setTodos(immer.produce(todos => { todos.push({text: input, status: false, uid: genUid()}) } ))
         return true
       }
       return false
@@ -187,19 +203,19 @@
     return (
       <div className='_app'>
         <div className='container'>
-          <div className='header'><span>{_config.header}</span></div>
+          <div className='motto'><span>{$.motto}</span></div>
           <div className='todos'>
             {
               todos.length ? <ul>
-                {todos.map((it, idx) => <TodoItem key={idx} todo={it} index={idx} />)}
-              </ul> : <span className='empty'>{_config.tip}</span>
+                {todos.map((it, idx) => <TodoItem key={it.uid} todo={it} index={idx} />)}
+              </ul> : <span className='tip'>{$.tip}</span>
             }
           </div>
-          <div className='hero'>
-            <WantTodo addTodo={addTodo} />
+          <div className='wish'>
+            <WishTodo addTodo={addTodo} />
           </div>
         </div>
-        <div className='footer'>{_config.copyRight}</div>
+        <div className='footer'>{$.copyRight}</div>
       </div>
     )
   }
@@ -208,7 +224,5 @@
     <App />,
     document.getElementById('root')
   )
-
 </script>
-
 </html>
