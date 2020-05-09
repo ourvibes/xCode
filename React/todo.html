@@ -1,50 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>react hook todo</title>
   <style type="text/css">
-		:root {
-			--yellow: #ffe58f;
-			--red: #ff7875;
-			--blue: #40a9ff;
-			--gray: #cccccc;
-			--black: #595959;
-		}
-		html {
-			-webkit-text-size-adjust: 100%;
-			-ms-text-size-adjust: 100%;
-			-moz-box-sizing: border-box; 
-			-webkit-box-sizing: border-box; 
-			-o-box-sizing: border-box; 
-			-ms-box-sizing: border-box;
-			box-sizing: border-box;
-			text-decoration: none;
-			text-shadow: none;
-		}
-		
-		body {
-			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-			height:100%;
-			width: 100%;
-			font-size: 16px;
-			overflow: hidden;
-		}
-		
+    :root {
+      --yellow: #ffe58f;
+      --blue: #40a9ff;
+      --gray: #cccccc;
+      --black: #595959;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -o-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+      box-sizing: border-box;
+      text-decoration: none;
+      text-shadow: none;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      height: 100%;
+      width: 100%;
+      font-size: 16px;
+      overflow: hidden;
+    }
+
     .container {
       width: 61.8%;
       margin: 20px auto;
       text-align: center;
-			color: var(--black);
+      color: var(--black);
     }
 
     .motto span {
       line-height: 48px;
       font-size: 1.3rem;
-			-webkit-box-shadow: inset 0 -10px var(--yellow);
-			box-shadow: inset 0 -10px var(--yellow);
-			outline-width: 0;
+      -webkit-box-shadow: inset 0 -10px var(--yellow);
+      box-shadow: inset 0 -10px var(--yellow);
+      outline-width: 0;
     }
 
     .todos {
@@ -133,12 +134,12 @@
     motto: 'Forever youthful. Forever weeping.',
     todos: [
       {
-				uid: '377368e9f4384',
+        uid: '377368e9f4384',
         text: '读完《百年孤独》',
         status: true
       },
       {
-				uid: 'b7a8656148c44',
+        uid: 'b7a8656148c44',
         text: '学会周杰伦的《蒲公英的约定》',
         status: false
       }
@@ -149,9 +150,9 @@
     tip: 'You did nothing...(＠_＠;) ',
     copyRight: `Copyright © ${new Date().getFullYear()} Lelie Chiang. All rights reserved `
   }
-	
-	const genUid = () => Math.random().toString(16).substring(2)
-	
+
+  const genUid = () => Math.random().toString(16).substring(2)
+
   const WishTodo = ({ addTodo }) => {
     const [input, setInput] = React.useState('')
     const handleInput = () => !!input && addTodo(input) && setInput('')
@@ -183,18 +184,18 @@
     }
 
     const yesTodo = (index) => {
-			const { status } = todos[index]
-			!status ? setTodos(immer.produce(todos => { todos[index].status = !status })) : null
+      const { status } = todos[index]
+      !status ? setTodos(immer.produce(todos => { todos[index].status = !status })) : null
     }
 
     const delTodo = (index) => {
-			setTodos(immer.produce(todos => { todos.splice(index, 1) }))
+      setTodos(immer.produce(todos => { todos.splice(index, 1) }))
     }
 
     const addTodo = (input) => {
       const exist = todos.some(it => it.text.trim() === input.trim())
       if (!exist) {
-        setTodos(immer.produce(todos => { todos.push({text: input, status: false, uid: genUid()}) } ))
+        setTodos(immer.produce(todos => { todos.push({ text: input, status: false, uid: genUid() }) }))
         return true
       }
       return false
@@ -225,4 +226,5 @@
     document.getElementById('root')
   )
 </script>
+
 </html>
